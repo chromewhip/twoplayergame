@@ -13,6 +13,19 @@ require "colorize"
 #  index = rand(4)
 #  p operator[index]
 # end
+class NoNameError < StandardError
+end
+class InvalidGuessError < StandardError
+end
+def get_answer
+  begin
+  @user_input = gets.chomp.to_i
+  !raise InvalidGuessError if @user_input.is_a?(Integer) 
+  end
+  rescue
+end
+
+
 
 def math_question
   @first_number = rand(1..20)
@@ -30,11 +43,9 @@ def math_question
     @operator_string = '*'
   end
   puts "what is #{@first_number} #{@operator_string} #{@second_number}?"
+  get_answer
 end
 
-def get_answer
-  @user_input = gets.chomp.to_i
-end
 def lives_score
   case 
   when @turn == 0 && @user_input == @answer
@@ -53,11 +64,24 @@ def lives_score
 end
 
 
-def player_names
-  puts "what is player 1's name:"
-  @player1 = gets.chomp.colorize(:blue)
+def player1_name
+  begin
+    puts "what is player 1's name:"
+    @player1 = gets.chomp.colorize(:blue)
+    raise NoNameError if @player1.empty?
+  end
+rescue
+retry
+end
+
+def player2_name
+  begin
   puts "what is player 2's name:"
   @player2 = gets.chomp.colorize(:orange)
+  raise NoNameError if @player2.empty?
+end
+rescue
+retry
 end
 
 def score_count
@@ -94,7 +118,8 @@ def game_over
   end
 end
 
-player_names
+player1_name
+player2_name
 while !game_over
   math_question
   get_answer

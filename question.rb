@@ -20,7 +20,10 @@ class Question
   end
 
   def to_string
-    "What is #{@first_num} #{@op_string} #{@second_num} ?!?! "
+    case turn
+    when 0
+    "#{@player_1}What is #{@first_num} #{@op_string} #{@second_num} ?!?! "
+  when 1 "#{@player_1}What is #{@first_num} #{@op_string} #{@second_num} ?!?! "
   end
 
   def is_correct?(user_input)
